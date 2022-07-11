@@ -68,13 +68,13 @@ buttonLogin.addEventListener("click", function (e) {
       .then((json) => {
         // Ao obter sucesso no login, chama a função de sucesso do login
         successLogin(json);
-        console.log(json); // retirar antes da entrega
+      
         // ocultaSpinner()
       })
       .catch((err) => {
         // Verifica os status de "senha incorreta ou email incorreto"
         if (err.status == 400 || err.status == 404 || err.status == 500) {
-          errorLogin();
+          errorLogin(err);
         }
       });
   }
@@ -82,7 +82,7 @@ buttonLogin.addEventListener("click", function (e) {
 
 // função em caso de sucesso: irá armazenar o token o sessionStorage
 function successLogin(successResponse) {
-  alert("Sucesso!");
+  //alert("Sucesso!");
 
   // salvando o token obtido da API
   sessionStorage.setItem("jwt", successResponse.jwt);
@@ -93,8 +93,13 @@ function successLogin(successResponse) {
 
 function errorLogin(errorResponse) {
   // ocultaSpinner()
-  console.log(errorResponse);
-  alert("User does not exist and/or Incorrect password and/or Server error");
+  if (errorResponse.status == 400 || errorResponse.status == 404) {
+    alert('User does not exist and/or Incorrect password')
+  } else if (errorResponse.status == 500) {
+    alert('Server error')
+  } else {
+    alert(`ERROR: ${errorResponse.statusText}`)
+  }
 }
 
 /* Validating the email input*/
