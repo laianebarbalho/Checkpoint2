@@ -119,6 +119,9 @@ a {
 
 a:hover {
   color: #7898FF;
+  color: #999;
+  font-size: 15px;
+  transition: .3s;
 }
 
 .form-header {
